@@ -16,12 +16,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // $exists = User::where('email',$request->email)->where('email',$request->email)->exists();
-        // if ($exists){
-
-        //     return "Logined";
-        // }
-
+       
         $credientials = $request->only('email','password');
 
         if(Auth::attempt($credientials))
