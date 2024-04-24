@@ -15,11 +15,6 @@ class UserController extends Controller
 
     public function signup(Request $request)
     {
-        $check_email = User::where('email', $request->email)->exists();
-        if($check_email)
-        {
-            return redirect()->back()->with('error', 'Email already exists in database');
-        }
         $validator = Validator::make($request->all(), [
             'password' => [
                 'required',
@@ -27,14 +22,23 @@ class UserController extends Controller
                 'min:8',
                 'regex:/^(?=.*[A-Z])(?=.*[^A-Za-z0-9])/',
             ],
+            'email'=>[
+                'required',
+                'email',
+                'unique:users,email',
+            ],
+            'first_name'=>[
+                'required'
+            ],
+            'last_name'=>[
+                'required'
+            ]
         ]);
 
         if ($validator->fails()) {
-
-            return redirect()->back()->with('error','Not a valid password');
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         $user = new User();
-
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->father_name = $request->father_name;

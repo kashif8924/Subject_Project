@@ -21,6 +21,9 @@
 
                       <form class="mx-1 mx-md-4" method="POST" action="{{url('/signup')}}">
                         @csrf
+                        @error('first_name')
+                            <div class="alert alert-danger mt-2">{{ $message }}</div>
+                        @enderror
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                           <div data-mdb-input-init class="form-outline flex-fill mb-0">
@@ -28,7 +31,9 @@
                             <label class="form-label" for="form3Example1c">First Name</label>
                           </div>
                         </div>
-
+                        @error('last_name')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                         @enderror
                         <div class="d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
@@ -44,7 +49,9 @@
                               <label class="form-label" for="form3Example1c">Father Name</label>
                             </div>
                           </div>
-
+                          @error('email')
+                          <div class="alert alert-danger mt-2">{{ $message }}</div>
+                        @enderror
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                           <div data-mdb-input-init class="form-outline flex-fill mb-0">
@@ -52,7 +59,9 @@
                             <label class="form-label" for="form3Example3c">Your Email</label>
                           </div>
                         </div>
-
+                        @error('password')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                        @enderror
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                           <div data-mdb-input-init class="form-outline flex-fill mb-0">
