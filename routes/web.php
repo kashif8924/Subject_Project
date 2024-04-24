@@ -15,3 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[UserController::class,'index']);
+
+Route::post('/signup',[UserController::class,'signup']);
