@@ -16,11 +16,12 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-       
+
         $credientials = $request->only('email','password');
 
         if(Auth::attempt($credientials))
         {
+            return Auth::user();
             return "logged";
         }
         return "Not logged in";
