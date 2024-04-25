@@ -33,4 +33,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/viewsubject',[SubjectController::class,'viewSubject']);
     Route::get('/select/{Subject_ID}',[SubjectController::class,'selectSubject']);
     Route::get('/drop/{subject_id}',[SubjectController::class,'dropSubject']);
+    Route::any('/search',[SubjectController::class,'search']);
 });
