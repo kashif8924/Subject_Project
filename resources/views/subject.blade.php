@@ -64,24 +64,34 @@
         }
 
         .search-form {
-        display: flex;
-        align-items: center;
-    }
+            display: flex;
+            align-items: center;
+        }
 
-    .search-input {
-        flex: 1;
-        margin-right: 10px;
-    }
+        .search-input {
+            flex: 1;
+            margin-right: 10px;
+        }
 
-    .search-btn {
-        width: 100px;
-    }
+        .search-btn {
+            width: 100px;
+        }
+
+        /* Custom CSS for profile and login buttons */
+        .profile-btn,
+        .login-btn {
+            margin-right: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <form action="{{url('/search')}}" method="POST">
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{url('/profile')}}" class="btn btn-success profile-btn">Profile</a>
+            <a href="{{url('/logout')}}" class="btn btn-primary login-btn">LogOut</a>
+        </div>
+        <form action="{{ url('/search') }}" method="POST" class="mb-3">
             @csrf
             <div class="form-group search-form">
                 <input type="text" name="subject" class="form-control search-input" placeholder="Search...">
@@ -92,26 +102,24 @@
         <div class="card main-card">
             @if (session('error'))
             <p style="color: red">{{ session('error') }}</p>
-             @endif
+            @endif
             <div class="card-body">
-                <a href="{{url('/viewsubject')}}" class="btn btn-primary view-subjects-btn">View Subjects</a>
+                <a href="{{ url('/viewsubject') }}" class="btn btn-primary view-subjects-btn">View Subjects</a>
                 <h5 class="card-title mb-3">All Subjects</h5>
                 <div class="row">
                     @foreach ($subjects as $subject)
                     <div class="col-md-4">
                         <div class="card subject-card">
                             <div class="card-body text-center">
-                                <h5 class="card-title mb-3">{{$subject->name}}</h5>
-                                <a href="{{url('/select/'.$subject->id.'')}}" class="btn btn-primary view-subjects-btn">Select</a>
+                                <h5 class="card-title mb-3">{{ $subject->name }}</h5>
+                                <a href="{{ url('/select/'.$subject->id) }}" class="btn btn-primary view-subjects-btn">Select</a>
                             </div>
                         </div>
                     </div>
-
                     @endforeach
                     <div class="pagination">
-                        {{ $subjects->links()}}
+                        {{ $subjects->links() }}
                     </div>
-
                 </div>
             </div>
         </div>
