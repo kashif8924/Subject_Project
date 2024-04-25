@@ -27,4 +27,9 @@ class User extends AuthenticatableUser implements Authenticatable
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    public function subjects()
+    {
+      return $this->belongsToMany(Subject::class);
+    }
 }
