@@ -62,11 +62,32 @@
         .pagination .page-item .page-link {
             font-size: 14px; /* Adjust the font size as needed */
         }
+
+        .search-form {
+        display: flex;
+        align-items: center;
+    }
+
+    .search-input {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .search-btn {
+        width: 100px;
+    }
     </style>
 </head>
 
 <body>
     <div class="container">
+        <form action="{{url('/search')}}" method="POST">
+            @csrf
+            <div class="form-group search-form">
+                <input type="text" name="subject" class="form-control search-input" placeholder="Search...">
+                <button type="submit" class="btn btn-primary search-btn">Search</button>
+            </div>
+        </form>
         <h2 class="mb-4">Subject Selection</h2>
         <div class="card main-card">
             @if (session('error'))
@@ -88,7 +109,7 @@
 
                     @endforeach
                     <div class="pagination">
-                        {{ $subjects->links() }}
+                        {{ $subjects->links()}}
                     </div>
 
                 </div>

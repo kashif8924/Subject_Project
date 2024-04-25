@@ -67,4 +67,16 @@ class SubjectController extends Controller
     $user->subjects()->detach($subject_id);
     return redirect()->back()->with('message','Subject Droped ');
     }
+
+    public function search(Request $request)
+    {
+       $subjects = Subject::where('name','like','%'.$request->subject.'%')->paginate(5);
+       if ($subjects->isEmpty())
+       {
+        return redirect('/subjects')->with('error', 'No Such Subject');
+        }
+
+        return view('subject', compact('subjects'));
+
+    }
 }
