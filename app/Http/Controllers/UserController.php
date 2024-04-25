@@ -44,6 +44,10 @@ class UserController extends Controller
         $user->father_name = $request->father_name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->save();
+        $created = $user->save();
+        if($created)
+        {
+            return redirect('login')->with('message','Your Account is Created Plz LOgin');
+        }
     }
 }

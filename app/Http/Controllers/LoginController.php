@@ -15,15 +15,15 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {
+{
+    $credentials = $request->only('email', 'password');
 
-        $credientials = $request->only('email','password');
-
-        if(Auth::attempt($credientials))
-        {
-            return Auth::user();
-            return "logged";
-        }
-        return "Not logged in";
+    if (Auth::attempt($credentials)) {
+        // Authentication successful, redirect the user
+        return redirect('/subjects');
     }
+
+    // Authentication failed
+    return "Not logged in";
+}
 }
