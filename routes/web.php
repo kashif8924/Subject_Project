@@ -22,6 +22,8 @@ Route::post('/signup',[UserController::class,'signup']);
 
 Route::get('/login',[LoginController::class,'index']);
 
+Route::get('/logout',[UserController::class,'logout'])->name('login');
+
 Route::post('/checklogin', [LoginController::class, 'login']);
 
 // Route::get('/subjects',[SubjectController::class,'index'])->middleware('auth');
@@ -34,4 +36,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/select/{Subject_ID}',[SubjectController::class,'selectSubject']);
     Route::get('/drop/{subject_id}',[SubjectController::class,'dropSubject']);
     Route::any('/search',[SubjectController::class,'search']);
+    Route::get('/profile',[UserController::class,'profile']);
+    Route::post('/profileupdate',[UserController::class,'profileUpdate']);
 });
