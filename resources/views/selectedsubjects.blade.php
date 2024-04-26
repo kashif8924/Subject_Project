@@ -36,6 +36,7 @@
         @endif
         <div class="table-responsive">
             <h1>Your Selected Subjects </h1>
+            <a href="{{ url('/subjects') }}" class="btn btn-primary view-subjects-btn">Subjects</a>
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                     <tr>
@@ -49,7 +50,7 @@
                          $i = 1;
                         @endphp
 
-                        @foreach ($selected_subjects as $subject)
+                        @foreach ($subjects as $subject)
                         <tr>
                              <th>{{ $i }}</th>
                                 <td>{{ $subject->name }}</td>

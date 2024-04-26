@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as AuthenticatableUser;
+use Illuminate\Support\Facades\Hash;
 
 class User extends AuthenticatableUser implements Authenticatable
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         // Add other fillable fields as needed
@@ -27,9 +28,19 @@ class User extends AuthenticatableUser implements Authenticatable
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+    public function setPasswordAttribute($password)
 
+    {
+        $this->attributes['password'] = Hash::make($password);
+    }
     public function subjects()
     {
       return $this->belongsToMany(Subject::class);
     }
+
+    public function scopeUser($query,$id)
+    {
+        return $query->find($id);
+    }
+
 }

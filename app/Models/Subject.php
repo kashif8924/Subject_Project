@@ -14,4 +14,14 @@ class Subject extends Model
        return  $this->belongsToMany(User::class);
     }
 
+    public function scopeSubject($query , $id)
+    {
+        return $query->find($id);
+    }
+
+    public function scopeFilter($query,$keyword)
+    {
+        $query->where('name','like','%'.$keyword.'%');
+    }
+
 }

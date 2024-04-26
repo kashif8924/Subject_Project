@@ -3,80 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subject;
-use App\Models\User;
+use App\Repositories\Interfaces\SubjectInterface;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Auth;
 class SubjectController extends Controller
 {
+    protected $subject;
 
-    public function index()
+    public function __construct(SubjectInterface $subject)
     {
-        $subjects = Subject::all();
-        $subjects = Subject::paginate(5);
-        return view('subject', compact('subjects'));
+            $this->subject = $subject;
+    }
+
+    public function index(Request $request)
+    {
+        return $this->subject->showSubject($request);
     }
 
     public function selectSubject($Subject_ID)
     {
-        $user = Auth::user();
-        $user = User::find($user->id);
-        $subject = Subject::find($Subject_ID);
-        if (!$subject) {
-            return 'Subject not found';
-        }
-
-        try {
-
-            $user->subjects()->attach($subject->id);
-
-        } catch (QueryException $e) {
-
-             'Error: ' . $e->getMessage();
-
-             return redirect()->back()->with('error', 'You have Already Selected This Subject');
-        }
-
-        return redirect()->back();
+       return $this->subject->selectSubject($Subject_ID);
     }
 
     public function viewSubject()
     {
-        $user = Auth::user();
-        $user = User::find($user->id);
-        $subjects = $user->subjects()->get();
-        if ($subjects->isEmpty()) {
-            return redirect('/subjects')->with('error', 'No Subject is Selected');
-        }
-        foreach($subjects as $subject)
-        {
-            $pivotData = $subject->pivot;
-            $subjectId = $pivotData->subject_id;
-            $selected_subject = Subject::find($subjectId);
-            $selected_subjects[] = $selected_subject;
-
-        }
-
-        return view('selectedsubjects',compact('selected_subjects'));
-
+        return $this->subject->viewSubject();
     }
-
     public function dropSubject($subject_id)
     {
-    $user = User::find(Auth::user()->id);
-    $user->subjects()->detach($subject_id);
-    return redirect()->back()->with('message','Subject Droped ');
+    return $this->subject->dropSubject($subject_id);
     }
 
-    public function search(Request $request)
-    {
-       $subjects = Subject::where('name','like','%'.$request->subject.'%')->paginate(5);
-       if ($subjects->isEmpty())
-       {
-        return redirect('/subjects')->with('error', 'No Such Subject');
-        }
-
-        return view('subject', compact('subjects'));
-
-    }
 }
