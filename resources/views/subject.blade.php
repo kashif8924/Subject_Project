@@ -88,6 +88,7 @@
 <body>
     <div class="container">
         <div class="d-flex justify-content-end mb-3">
+            <a href="{{url('/addsubject')}}" class="btn btn-success profile-btn">Add Subject</a>
             <a href="{{url('/profile')}}" class="btn btn-success profile-btn">Profile</a>
             <a href="{{url('/logout')}}" class="btn btn-primary login-btn">LogOut</a>
         </div>
@@ -109,8 +110,16 @@
                     @if (count($subjects))
                     @foreach ($subjects as $subject)
                     <div class="col-md-4">
+
                         <div class="card subject-card">
+
                             <div class="card-body text-center">
+                                @if(!empty($subject->users) && count($subject->users) > 0)
+                        @if($subject->users[0]->id = auth()->id())
+                        <button type="button" class="btn btn-success">Sellected</button>
+                        @endif
+                        @endif
+                                <img src="{{ asset($subject->image) }}" alt="Subject Image" class="img-fluid mb-3">
                                 <h5 class="card-title mb-3">{{ $subject->name }}</h5>
                                 <a href="{{ url('/select/'.$subject->id) }}" class="btn btn-primary view-subjects-btn">Select</a>
                             </div>

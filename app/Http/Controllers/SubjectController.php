@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserStoreRequest;
 use App\Models\Subject;
 use App\Repositories\Interfaces\SubjectInterface;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class SubjectController extends Controller
     public function index(Request $request)
     {
         $subjects = $this->subject->showSubject($request);
+        //return $subjects;
         return view('subject', compact('subjects'));
     }
 
@@ -48,6 +50,20 @@ class SubjectController extends Controller
     {
     return redirect('/viewsubject')->with('message','Subject Droped ');
     }
+    }
+
+    public function addSubject()
+    {
+        return view('addsubject');
+    }
+
+    public function createSubject(UserStoreRequest $request)
+    {
+        $response = $this->subject->createSubject($request->name , $request->file('image'));
+        if($response == 'success')
+        {
+            return redirect('/addsubject')->with('message',"Subject Created Successfully");
+        }
     }
 
 }

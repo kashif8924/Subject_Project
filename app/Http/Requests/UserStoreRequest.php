@@ -51,6 +51,13 @@ class UserStoreRequest extends FormRequest
                 'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ];
         }
+
+        if ($this->is('createsubject')) {
+            return [
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'name' => 'required',
+            ];
+        }
         return [];
     }
 

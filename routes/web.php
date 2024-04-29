@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
+use App\Models\Subject;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,4 +38,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/drop/{subject_id}',[SubjectController::class,'dropSubject']);
     Route::get('/profile',[UserController::class,'profile']);
     Route::post('/profileupdate',[UserController::class,'profileUpdate']);
+    Route::get('/addsubject',[SubjectController::class,'addSubject']);
+    Route::post('/createsubject',[SubjectController::class,'createSubject']);
 });
