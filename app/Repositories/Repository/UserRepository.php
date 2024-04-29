@@ -20,13 +20,21 @@ class UserRepository implements UserInterface
 
     public function signup($request)
     {
-        //dd($request->all());
-         $created = $this->user->create($request->all());
-
-        if($created)
+        try{
+            DB::beginTransaction();
+         $created =  $this->user->create($request->all());
+         if($created)
          {
-             return redirect('login')->with('message','Your Account is Created Plz LOgin');
+            $created = "created";
          }
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            $created =  "error";
+        }
+        DB::commit();
+        return $created;
+
     }
     public function profileUpdate($request)
 {
@@ -49,13 +57,13 @@ class UserRepository implements UserInterface
 
         if ($saved) {
 
-            $message = "Profile Updated";
+            $message = "updated";
         }
     } catch (Exception $e) {
         DB::rollBack();
-        $message = "Error Occured! Please Try Again.";
+        $message = "Error";
     }
     DB::commit();
-    return redirect('/profile')->with('message',   $message );
+    return $message;
 }
 }

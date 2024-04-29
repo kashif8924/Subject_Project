@@ -19,11 +19,8 @@ class LoginController extends Controller
     $credentials = $request->only('email', 'password');
 
     if (Auth::attempt($credentials)) {
-        // Authentication successful, redirect the user
         return redirect('/subjects');
     }
-
-    // Authentication failed
     return "Not logged in";
 }
 }

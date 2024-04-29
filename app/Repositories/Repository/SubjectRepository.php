@@ -6,6 +6,7 @@ use App\Models\Subject;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use App\Repositories\Interfaces\SubjectInterface;
+use Illuminate\Support\Facades\DB;
 
 class SubjectRepository implements SubjectInterface
 {
@@ -21,52 +22,50 @@ class SubjectRepository implements SubjectInterface
 
     public function selectSubject($Subject_ID)
     {
-        $user = $this->user->user((Auth::user()->id));
-        $subject = $this->subject->subject($Subject_ID);
-        if (!$subject) {
-            return 'Subject not found';
-        }
-
         try {
-
-            $user->subjects()->attach($subject->id);
+            DB::beginTransaction();
+            $user = $this->user->user((Auth::user()->id));  //this is only for practice
+            $user = Auth::user();
+            $subject = $this->subject->subject($Subject_ID);
+            $exists = DB::table('subject_user')->where('user_id' ,$user->id)->where('subject_id',$subject->id)->exists();
+            if($exists)
+            {
+                $message =  'Already_Selected';
+            }
+            if(!$exists)
+            {
+                $user->subjects()->attach($subject->id);
+                $message = "Selected";
+            }
 
         } catch (QueryException $e) {
-
-             'Error: ' . $e->getMessage();
-
-             return redirect()->back()->with('error', 'You have Already Selected This Subject');
+            DB::rollBack();
+            $message =  'Error';
         }
+        DB::commit();
 
-        return redirect()->back();
+        return $message;
     }
     public function viewSubject()
     {
        $user = $this->user->user((Auth::user()->id));
-        $subjects = $user->subjects()->with('users')->get();
-
-        return view('selectedsubjects',compact('subjects'));
+       return  $subjects = $user->subjects()->with('users')->get();
     }
 
     public function dropSubject($subject_id)
     {
         $user = $this->user->user((Auth::user()->id));
-        $user->subjects()->detach($subject_id);
-        return redirect('/viewsubject')->with('message','Subject Droped ');
+        return $user->subjects()->detach($subject_id);
+
     }
     public function showSubject($request)
     {
-        $subjects = Subject::paginate(5);
-
-        if($request->filled('subject'))
-        {
-            $subjects = $this->subject->filter($request->subject)->paginate(5);
-            if ($subjects->isEmpty())
-            {
-                    return redirect('/subjects')->with('error', 'No Such Subject');
-            }
+        $query = $this->subject;
+        if($request->filled('subject')){
+            $query = $query->filter($request->subject);
         }
-        return view('subject', compact('subjects'));
+        return $query->paginate(5);
+
     }
 
 }

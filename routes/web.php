@@ -24,7 +24,7 @@ Route::get('/login',[LoginController::class,'index']);
 
 Route::get('/logout',[UserController::class,'logout'])->name('login');
 
-Route::post('/checklogin', [LoginController::class, 'login']);
+Route::post('/checklogin', [LoginController::class, 'login']);   // change url name
 
 // Route::get('/subjects',[SubjectController::class,'index'])->middleware('auth');
 
@@ -36,5 +36,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/select/{Subject_ID}',[SubjectController::class,'selectSubject']);
     Route::get('/drop/{subject_id}',[SubjectController::class,'dropSubject']);
     Route::get('/profile',[UserController::class,'profile']);
-    Route::get('/profileupdate',[UserController::class,'profileUpdate']);
+    Route::post('/profileupdate',[UserController::class,'profileUpdate']);
 });
