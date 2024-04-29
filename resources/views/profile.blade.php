@@ -30,6 +30,7 @@
             <div class="col-md-8 col-lg-7 col-xl-6">
               <img src="{{asset($user->image)}}"
                 class="img-fluid" alt="Phone image">
+
             </div>
             <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                 <form method="POST" action="{{url('/profileupdate')}}" enctype="multipart/form-data">

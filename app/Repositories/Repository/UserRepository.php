@@ -2,7 +2,7 @@
 namespace App\Repositories\Repository;
 
 use Exception;
-
+use App\Helpers\ImageHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -45,18 +45,13 @@ class UserRepository implements UserInterface
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
-
-        if ($request->hasFile('profile_image')) {
-            $image = $request->file('profile_image');
-            $imageName = time().'.'.$image->extension();
-            $image->move(public_path('images'), $imageName);
-
-        }
-        $user->image = 'images/'.$imageName;
         $saved = $user->save();
 
         if ($saved) {
-
+            if ($request->hasFile('profile_image')) {
+                $image = $request->file('profile_image');
+                ImageHelper::ImageUpload('users',$image,'image');
+            }
             $message = "updated";
         }
     } catch (Exception $e) {
