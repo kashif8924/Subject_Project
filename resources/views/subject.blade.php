@@ -91,8 +91,7 @@
             <a href="{{url('/profile')}}" class="btn btn-success profile-btn">Profile</a>
             <a href="{{url('/logout')}}" class="btn btn-primary login-btn">LogOut</a>
         </div>
-        <form action="{{ url('/search') }}" method="POST" class="mb-3">
-            @csrf
+        <form action="{{ url('/subjects') }}" method="GET" class="mb-3">
             <div class="form-group search-form">
                 <input type="text" name="subject" class="form-control search-input" placeholder="Search...">
                 <button type="submit" class="btn btn-primary search-btn">Search</button>
