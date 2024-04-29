@@ -106,6 +106,7 @@
                 <a href="{{ url('/viewsubject') }}" class="btn btn-primary view-subjects-btn">View Subjects</a>
                 <h5 class="card-title mb-3">All Subjects</h5>
                 <div class="row">
+                    @if (count($subjects))
                     @foreach ($subjects as $subject)
                     <div class="col-md-4">
                         <div class="card subject-card">
@@ -116,6 +117,9 @@
                         </div>
                     </div>
                     @endforeach
+                    @else
+                    <h2>Record not found</h2>
+                    @endif
                     <div class="pagination">
                         {{ $subjects->links() }}
                     </div>

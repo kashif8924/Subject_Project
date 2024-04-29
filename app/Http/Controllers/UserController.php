@@ -24,7 +24,11 @@ class UserController extends Controller
 
     public function signup(UserStoreRequest $request)
     {
-       return   $user = $this->user->signup($request);
+        $response =    $user = $this->user->signup($request);
+
+        if($response == 'created'){
+       return redirect('login')->with('message','Your Account is Created Plz LOgin');
+        }
     }
 
     public function profile()
@@ -35,7 +39,15 @@ class UserController extends Controller
 
     public function profileUpdate(Request $request)
     {
-        return $this->user->profileUpdate($request);
+       $response =  $this->user->profileUpdate($request);
+       if($response == 'updated'){
+        return redirect('/profile')->with('message','Your Profile has been updated');
+       }
+       if($response == 'Error')
+       {
+        return redirect('/profile')->with('message','Error occured while updating your profile');
+       }
+
     }
 
     public function logout()

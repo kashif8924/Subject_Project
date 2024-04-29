@@ -6,5 +6,5 @@ interface UserInterface
 {
     public function signup($request);
 
-    public function profileUpdate($request);
+public function profileUpdate($request);
 }

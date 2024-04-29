@@ -22,8 +22,6 @@ class CreateSubjectUserTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
 
-            $table->unique(['user_id', 'subject_id']);
-
         });
     }
 
