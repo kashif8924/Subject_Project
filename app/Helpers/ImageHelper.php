@@ -1,13 +1,3 @@
-* text=auto
-
-*.blade.php diff=html
-*.css diff=css
-*.html diff=html
-*.md diff=markdown
-*.php diff=php
-
-/.github export-ignore
-CHANGELOG.md export-ignore
 <?php
 
 namespace App\Helpers;
@@ -17,18 +7,24 @@ class ImageHelper
 {
     public static function ImageUpload($table,$image,$column)
     {
+        //dd($image);
         $imageName = time().'.'.$image->extension();
         $image->move(public_path('images'), $imageName);
         $image = 'images/'.$imageName;
+
         try
         {
             DB::beginTransaction();
-           $response =  DB::table($table)->update([$column => $image]);
+           $img = DB::table($table)->update([$column => $image]);
+          if($img)
+          {
+            $response = true;
+          }
         }
         catch(\Exception $e)
         {
             DB::rollBack();
-            $response = "error";
+            $response = false;
         }
         DB::commit();
         return $response;
