@@ -3,10 +3,11 @@ namespace App\Repositories\Repository;
 
 use App\Models\User;
 use App\Models\Subject;
+use App\Helpers\ImageHelper;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use App\Repositories\Interfaces\SubjectInterface;
-use Illuminate\Support\Facades\DB;
 
 class SubjectRepository implements SubjectInterface
 {
@@ -64,8 +65,24 @@ class SubjectRepository implements SubjectInterface
         if($request->filled('subject')){
             $query = $query->filter($request->subject);
         }
-        return $query->paginate(5);
-
+         return  $subjects =  $query->with('users')->paginate(5);
+    }
+    public function createSubject($name ,$image)
+    {
+        try{
+            DB::beginTransaction();
+         $this->subject->name = $name;
+         $this->subject->save();
+        ImageHelper::ImageUpload('subjects',$image,'image',$this->subject->id);
+        $message = 'success';
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+            $message = 'error';
+        }
+        DB::commit();
+        return $message;
     }
 
 }

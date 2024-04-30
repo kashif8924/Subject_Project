@@ -2,10 +2,13 @@
 namespace App\Repositories\Repository;
 
 use Exception;
-use App\Helpers\ImageHelper;
 use App\Models\User;
+use App\Jobs\SendEmailJob;
+use App\Mail\WelcomeEmail;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Repositories\Interfaces\UserInterface;
 
 class UserRepository implements UserInterface
@@ -22,9 +25,10 @@ class UserRepository implements UserInterface
     {
         try{
             DB::beginTransaction();
-         $created =  $this->user->create($request->all());
-         if($created)
+         $user = $this->user->create($request->all());
+         if($user)
          {
+            dispatch(new SendEmailJob($user));
             $created = "created";
          }
         }
@@ -50,7 +54,7 @@ class UserRepository implements UserInterface
         if ($saved) {
             if ($request->hasFile('profile_image')) {
                 $image = $request->file('profile_image');
-                ImageHelper::ImageUpload('users',$image,'image');
+                ImageHelper::ImageUpload('users',$image,'image',Auth::user()->id);
             }
             $message = "updated";
         }
